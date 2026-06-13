@@ -1,0 +1,35 @@
+# ─── Secrets — NEVER commit these ──────────────────────────
+.env
+*.key
+secrets/
+
+# ─── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.Python
+
+# ─── Virtual environments ──────────────────────────────────
+.venv/
+venv/
+env/
+
+# ─── Testing / coverage ────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ─── Streamlit ─────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ─── IDE / OS ──────────────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ─── Notebooks ─────────────────────────────────────────────
+.ipynb_checkpoints/

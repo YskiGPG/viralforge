@@ -38,8 +38,21 @@ def _client():
     return _youtube
 
 
-def youtube_search(query: str, max_results: int = 8) -> list[dict[str, Any]]:
+def youtube_search(
+    query: str,
+    max_results: int = 8,
+    published_after: str | None = None,
+    order: str = "relevance",
+) -> list[dict[str, Any]]:
     """Search YouTube for videos matching `query`, with view counts merged in.
+
+    Args:
+        query: search query.
+        max_results: how many videos to return.
+        published_after: optional RFC3339 UTC timestamp (e.g. "2026-06-09T00:00:00Z"); only
+            videos published after this are returned. Use for recency/trend windows.
+        order: result ordering — "relevance" (default), "viewCount", "date", etc. Use
+            "viewCount" to surface the most-watched videos in a window.
 
     Returns a list of dicts, each with:
         video_id, title, channel, view_count (int), published_at, url
@@ -47,20 +60,21 @@ def youtube_search(query: str, max_results: int = 8) -> list[dict[str, Any]]:
     On any API error, logs a warning and returns an empty list rather than raising,
     so the orchestrator can degrade gracefully.
     """
-    key = (query, max_results)
+    key = (query, max_results, published_after, order)
     if key in _CACHE:
-        log.info("youtube_search cache hit: %r", query)
+        log.info("youtube_search cache hit: %r (after=%s, order=%s)", query, published_after, order)
         return _CACHE[key]
 
     try:
         youtube = _client()
 
         # Step 1: search → video IDs + snippet (no statistics available here).
-        search_resp = (
-            youtube.search()
-            .list(q=query, part="snippet", type="video", maxResults=max_results)
-            .execute()
+        search_kwargs: dict[str, Any] = dict(
+            q=query, part="snippet", type="video", maxResults=max_results, order=order
         )
+        if published_after:
+            search_kwargs["publishedAfter"] = published_after
+        search_resp = youtube.search().list(**search_kwargs).execute()
         items = search_resp.get("items", [])
         video_ids = [it["id"]["videoId"] for it in items if it.get("id", {}).get("videoId")]
 

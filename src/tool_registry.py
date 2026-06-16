@@ -33,6 +33,20 @@ TOOL_DEFS: list[dict[str, Any]] = [
                     "description": "How many videos to return (default 8).",
                     "default": 8,
                 },
+                "published_after": {
+                    "type": "string",
+                    "description": (
+                        "Optional RFC3339 UTC timestamp, e.g. '2026-06-09T00:00:00Z'. Only videos "
+                        "published after this are returned. Compute it from the user's time window "
+                        "(e.g. 'last 7 days') for trend/recency questions."
+                    ),
+                },
+                "order": {
+                    "type": "string",
+                    "enum": ["relevance", "viewCount", "date", "rating", "title"],
+                    "description": "Result ordering. Use 'viewCount' to get the most-watched videos in a window.",
+                    "default": "relevance",
+                },
             },
             "required": ["query"],
         },

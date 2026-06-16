@@ -1,7 +1,7 @@
 """orchestrator — the main ViralForge agent loop (Phase 3 single-flow + Phase 4 routing).
 
 This is the Anthropic SDK message loop. It:
-  1. Researches the concept with the data Tools via SDK tool-use (youtube_search, reddit_search).
+  1. Researches the concept with the data Tools via SDK tool-use (youtube_search, youtube_comments).
   2. Runs the Skills pipeline using PROGRESSIVE DISCLOSURE — each skill's full body is loaded
      only at the moment it is invoked (see skills_loader).
   3. Assembles a complete creative plan.
@@ -92,7 +92,7 @@ def _call(model: str, system: str, messages: list[dict], max_tokens: int = 1024,
 def _run_tool_loop(system: str, user_content: str) -> dict:
     """Generic tool-use loop: Claude (MODEL_FAST) decides what to search, the real tools run, and
     results feed back until it stops. Returns the collected raw tool data, keyed by tool."""
-    collected: dict[str, list] = {"youtube_search": [], "reddit_search": []}
+    collected: dict[str, list] = {"youtube_search": [], "youtube_comments": []}
     messages: list[dict] = [{"role": "user", "content": user_content}]
 
     for _ in range(5):  # hard cap on tool-use turns
@@ -126,19 +126,20 @@ def _run_tool_loop(system: str, user_content: str) -> dict:
         messages.append({"role": "user", "content": tool_results})
 
     log.info(
-        "Tool loop gathered: %d youtube, %d reddit",
+        "Tool loop gathered: %d youtube, %d comments",
         len(collected.get("youtube_search", [])),
-        len(collected.get("reddit_search", [])),
+        len(collected.get("youtube_comments", [])),
     )
     return collected
 
 
 def _research(concept: str) -> dict:
-    """Gather grounding data for a video idea: comparable YouTube Shorts + Reddit audience signal."""
+    """Gather grounding data for a video idea: comparable YouTube Shorts + their top comments."""
     system = (
         "You are the research step of a YouTube Shorts planning assistant. For the given video "
-        "idea, gather grounding data: search YouTube for comparable Shorts, and search Reddit for "
-        "how the audience talks about the topic. Make at most a few focused tool calls, then stop."
+        "idea, gather grounding data: first search YouTube for comparable Shorts with youtube_search, "
+        "then fetch the top comments on one or two of the most relevant results with youtube_comments "
+        "to learn how the audience talks about the topic. Make at most a few focused tool calls, then stop."
     )
     return _run_tool_loop(system, f"Video idea: {concept}")
 
@@ -190,12 +191,12 @@ def _format_data_for_trends(data: dict) -> str:
             f"- {v.get('view_count', 0):>12,} views | {v.get('title', '')} "
             f"({v.get('channel', '')}) | {v.get('url', '')}"
         )
-    reddit = data.get("reddit_search", [])
-    if reddit:
-        lines.append("\nReddit discussion:")
-        for p in reddit:
-            lines.append(f"- [{p.get('score', 0)} pts, {p.get('num_comments', 0)} comments] {p.get('title', '')}")
-    return "\n".join(lines) if vids or reddit else "(no data was retrieved)"
+    comments = data.get("youtube_comments", [])
+    if comments:
+        lines.append("\nTop comments on comparable videos (audience signal):")
+        for c in comments:
+            lines.append(f"- [{c.get('like_count', 0)} likes] {c.get('text', '')}")
+    return "\n".join(lines) if vids or comments else "(no data was retrieved)"
 
 
 def _references_block(data: dict, limit: int = 8) -> str:
@@ -235,7 +236,7 @@ def _full_plan(user_message: str) -> str:
     log.info("Skills available (resident metadata only): %s", [s["name"] for s in index])
 
     # 1. Research with the data tools.
-    _emit("step", label="Researching YouTube + Reddit")
+    _emit("step", label="Researching YouTube (comparable Shorts + comments)")
     data = _research(concept)
     data_block = _format_data_for_trends(data)
 

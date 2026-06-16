@@ -27,13 +27,8 @@ def _require(name: str) -> str:
 # Anthropic
 ANTHROPIC_API_KEY = _require("ANTHROPIC_API_KEY")
 
-# YouTube
+# YouTube (also the audience-signal source, via youtube_comments)
 YOUTUBE_API_KEY = _require("YOUTUBE_API_KEY")
-
-# Reddit
-REDDIT_CLIENT_ID = _require("REDDIT_CLIENT_ID")
-REDDIT_CLIENT_SECRET = _require("REDDIT_CLIENT_SECRET")
-REDDIT_USER_AGENT = _require("REDDIT_USER_AGENT")
 
 # Model names — kept here so we change them in one place.
 MODEL_FAST = "claude-haiku-4-5-20251001"   # cheap/fast tasks

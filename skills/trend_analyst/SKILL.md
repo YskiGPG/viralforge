@@ -1,6 +1,6 @@
 ---
 name: trend_analyst
-description: Given a list of YouTube videos (titles, view counts, metadata) and optional Reddit discussion, extract the viral patterns they share — title formulas, hook archetypes, pacing signals — and explain what separates the high performers from the rest. Use this first, before writing hooks or titles, to ground the plan in real data.
+description: Given a list of YouTube videos (titles, view counts, metadata) and optional top comments, extract the viral patterns they share — title formulas, hook archetypes, pacing signals — and explain what separates the high performers from the rest. Use this first, before writing hooks or titles, to ground the plan in real data.
 ---
 
 # trend_analyst
@@ -33,8 +33,8 @@ Hard rules:
 
 You receive:
 - A list of YouTube videos, each with: `title`, `channel`, `view_count`, `published_at`, `url`.
-- Optionally, a list of Reddit posts (`title`, `score`, `num_comments`, `selftext`) showing
-  what the audience around this topic actually talks about.
+- Optionally, a list of top comments on comparable videos (`text`, `like_count`) showing what
+  the audience around this topic actually says.
 
 ## How to analyze
 
@@ -47,9 +47,9 @@ You receive:
 3. **Infer hook archetypes.** From the titles + channels, infer the likely opening move:
    shock/surprise, relatable problem, bold claim, visual spectacle, or question. You are
    inferring from titles, so hedge honestly ("titles suggest…").
-4. **Read the Reddit signal (if present).** What language, pain points, or desires does the
-   audience repeat? High-comment threads reveal what people argue about or ask for — that is
-   raw material for an authentic hook.
+4. **Read the comment signal (if present).** What language, pain points, or desires does the
+   audience repeat? High-like comments reveal what people react to or ask for — that is raw
+   material for an authentic hook.
 5. **Name the gap.** State plainly what the under-performers seem to miss (generic titles, no
    curiosity gap, no clear stakes, etc.).
 
@@ -59,8 +59,8 @@ You receive:
 
 - **Title formulas** (2–4 bullets): each names a formula and cites ≥2 real titles **with view counts** from the data.
 - **Hook archetypes** (2–3 bullets): the opening moves that recur, each tied to the specific video(s) (title + view count) that show it, with the inference noted.
-- **Audience signal** (1–3 bullets): what Reddit/the topic's audience cares about, in their words.
-  Skip this section if no Reddit data was provided.
+- **Audience signal** (1–3 bullets): what the comments/the topic's audience cares about, in their words.
+  Skip this section if no comment data was provided.
 - **What separates winners from the rest** (1–2 sentences): the single clearest differentiator, pointing to the high-view vs low-view videos by name.
 
 Keep the whole summary under ~250 words. Be specific to THIS data — a summary that could

@@ -94,7 +94,7 @@ cur = _current()
 
 # ── Header ───────────────────────────────────────────────────────────────────
 st.title("🎬 ViralForge")
-st.caption("Conversational planning for YouTube Shorts — grounded in real YouTube + Reddit data.")
+st.caption("Conversational planning for YouTube Shorts — grounded in real YouTube videos + comments.")
 
 with st.expander("Try an example", expanded=not cur["messages"]):
     cols = st.columns(len(EXAMPLES))

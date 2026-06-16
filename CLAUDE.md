@@ -2,7 +2,7 @@
 
 Conversational AI video-planning assistant for YouTube Shorts. User types a natural-language
 video idea; the system returns a creative plan (positioning, 3 titles, a 15-second hook,
-filming tips, distribution) grounded in real YouTube + Reddit data.
+filming tips, distribution) grounded in real YouTube video + comment data.
 
 2-person, 2-week university course project. Scope accordingly: simplest thing that works and
 demos. Don't add features, abstractions, or robustness the timeline doesn't need.
@@ -19,8 +19,10 @@ task's `Depends on:` and build toward its `Done when:`.**
   data functions in `src/tools/`. One orchestrator (`src/orchestrator.py`) decides what to invoke.
 - Models: use the `MODEL_FAST` / `MODEL_SMART` constants from `src/config.py`. Never hardcode model
   strings elsewhere. (`MODEL_FAST` = Haiku, light tasks; `MODEL_SMART` = Sonnet, reasoning.)
-- Data: YouTube Data API v3 + Reddit (PRAW), free tier only. NEVER scrape Xiaohongshu, Instagram,
-  or TikTok — ruled out.
+- Data: YouTube Data API v3 only, free tier — video search plus `commentThreads` for audience
+  signal. (Reddit/PRAW was dropped: Reddit now gates API credentials behind an approval process,
+  and the comments on comparable videos are a more on-target audience anyway.) NEVER scrape
+  Xiaohongshu, Instagram, TikTok, or Reddit — ruled out.
 - Frontend: Streamlit (stretch). CLI is the minimum deliverable.
 - Target: YouTube Shorts only.
 
@@ -50,7 +52,7 @@ disclosure: only each skill's `name` + `description` stay in context at startup;
   `videos.list(part="statistics")` call is needed. Cache identical queries within a session.
 - Verify current API details from official docs, not memory (limits/signatures change):
   Anthropic https://docs.claude.com/en/api/overview · YouTube
-  https://developers.google.com/youtube/v3/docs · PRAW https://praw.readthedocs.io
+  https://developers.google.com/youtube/v3/docs
 
 ## How to work here
 

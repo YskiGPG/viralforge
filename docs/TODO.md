@@ -189,13 +189,16 @@ grounded in human references.
 
 ## Phase 6 — Stretch goals (only if core is done)
 
-- [ ] **6.1 Streamlit GUI with streaming.** Build out `app.py`: chat interface that streams
-  the orchestrator's output token by token and shows which Skills/Tools are running.
+- [x] **6.1 Streamlit GUI with streaming.** *(`app.py`: chat UI, token streaming via orchestrator's
+  progress hook, live "which Skill/Tool is running" panel. Streaming + boot verified; run `streamlit run app.py`)*
+  Build out `app.py`: chat interface that streams the orchestrator's output token by token and
+  shows which Skills/Tools are running.
   *Depends on:* 3.4.
-- [ ] **6.2 "Regenerate / try a different angle" control.** A button that re-runs the plan
-  with a variation instruction.
+- [x] **6.2 "Regenerate / try a different angle" control.** *(button re-runs the last concept with a
+  fresh-angle instruction)* A button that re-runs the plan with a variation instruction.
   *Depends on:* 6.1.
-- [ ] **6.3 2–3 rotating demo examples** beyond the climbing case for the final presentation.
+- [x] **6.3 2–3 rotating demo examples** *(3 quick-start example buttons in the GUI)* beyond the
+  climbing case for the final presentation.
 
 ---
 

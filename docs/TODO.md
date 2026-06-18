@@ -208,9 +208,10 @@ grounded in human references.
 
 ## Phase 7 — Deliverables wrap-up
 
-- [ ] **7.1 Final written report.** Cover architecture, the progressive-disclosure mechanism,
-  and all three evaluation axes with results.
-- [ ] **7.2 Final presentation / demo.** Lead with the climbing example; show the agent
+- [x] **7.1 Final written report.** Cover architecture, the progressive-disclosure mechanism,
+  and all three evaluation axes with results. *(`docs/final_report.md`.)*
+- [x] **7.2 Final presentation / demo.** Lead with the climbing example; show the agent
   working live.
-- [ ] **7.3 README + repo polish.** Make sure a fresh clone + the Setup steps actually run
-  end to end for someone who wasn't there.
+- [x] **7.3 README + repo polish.** Make sure a fresh clone + the Setup steps actually run
+  end to end for someone who wasn't there. *(Added a "Running ViralForge" section; fresh venv +
+  live `check_youtube_comments.py` verified end to end.)*

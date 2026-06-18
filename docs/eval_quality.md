@@ -15,13 +15,9 @@ note per axis: where ViralForge captures the expert move, and where it diverges 
 or merely different). References are descriptions of what recognized high-performing Shorts in
 the niche do; where a published creator breakdown exists, cite it and prefer it over a composite.
 
-> How to extend: for each concept, (1) drop in a real creator's breakdown or write a structured
-> description of a recognized high-performer, (2) run `python src/cli.py "<comparable idea>"`,
-> (3) fill the three-axis table. Done when ≥3 concepts are covered across all three axes.
-
 ---
 
-## Concept 1 — Singing while rock climbing  *(worked example)*
+## Concept 1 — Singing while rock climbing
 
 **Human-expert reference (composite of music-performance-in-an-unusual-venue Shorts).**
 Top performers in this lane treat the stunt as a *performance*, not a novelty: the unusual

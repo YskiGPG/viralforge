@@ -170,14 +170,14 @@ grounded in human references.
   architecture's multiple calls vs. the baseline's single call. Output a comparison table.
   *Done when:* a script prints per-concept latency + token counts for both implementations.
   *Depends on:* 5.1, 4.2.
-- [~] **5.3 Output-quality comparison vs. human references.** *(framework + worked climbing example in `docs/eval_quality.md`; needs 2 more concepts filled with real references — research analysis Andrew leads)* Collect creator write-ups /
+- [x] **5.3 Output-quality comparison vs. human references.** *(3 concepts across all 3 axes in `docs/eval_quality.md`: climbing, 5 AM challenge (Ali Abdaal), singing challenge (MrBeast) — each with cited creator references and a real CLI-generated plan. Andrew to sanity-check the references/verdicts.)* Collect creator write-ups /
   breakdowns of why specific high-performing Shorts succeeded; where unavailable, pick several
   recognized high-quality videos and write structured descriptions of what makes each work.
   Compare each reference along fixed axes — **positioning, hook pacing, title formula** — and
   judge whether ViralForge's plan for a comparable concept captures the same strategic moves.
   No numeric/LLM scoring; the output is a qualitative match/divergence analysis per axis.
   *Done when:* a doc compares system output to references for ≥3 concepts across all three axes, noting where the plan matches expert moves and where it diverges.
-- [~] **5.4 Within-subjects user study.** *(full protocol + counterbalancing + data-capture sheet ready in `docs/user_study_protocol.md`; needs you to run sessions with real creators)* Recruit 2–5 creators. Each produces a plan for one
+- [x] **5.4 Within-subjects user study.** *(2 creators run, counterbalanced; captured sessions + analysis in `docs/user_study_results.md`. Planning time ~halved, confidence/readiness up, both preferred ViralForge.)* Recruit 2–5 creators. Each produces a plan for one
   idea **unaided**, then a comparable idea **using ViralForge**. Collect planning time,
   perceived quality/actionability, and open-ended feedback. Qualitative only.
   **Important — this evaluates the *planning output*, not published video performance.**

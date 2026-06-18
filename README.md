@@ -92,6 +92,31 @@ python tests/check_youtube_comments.py
 
 See `docs/` for the full project brief.
 
+## Running ViralForge
+
+With your virtual environment active and `.env` filled in:
+
+**CLI** — the minimum deliverable:
+
+```bash
+# One-shot: pass an idea, get a full plan, exit
+python src/cli.py "I want to film myself singing while rock climbing"
+
+# Interactive: chat and refine, with follow-ups + memory ("rephrase that title")
+python src/cli.py
+
+# Add -v to watch the agent work — routing, and which Skills + Tools run
+python src/cli.py -v "A 60-second tutorial on making cold brew coffee at home"
+```
+
+**Streamlit GUI** — streaming chat with a live "which Skill/Tool is running" panel:
+
+```bash
+streamlit run app.py
+```
+
+Both make real Anthropic + YouTube API calls, so each run takes a few seconds and uses quota.
+
 ## License
 
 MIT — see `LICENSE`.

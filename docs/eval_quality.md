@@ -15,13 +15,9 @@ note per axis: where ViralForge captures the expert move, and where it diverges 
 or merely different). References are descriptions of what recognized high-performing Shorts in
 the niche do; where a published creator breakdown exists, cite it and prefer it over a composite.
 
-> How to extend: for each concept, (1) drop in a real creator's breakdown or write a structured
-> description of a recognized high-performer, (2) run `python src/cli.py "<comparable idea>"`,
-> (3) fill the three-axis table. Done when ≥3 concepts are covered across all three axes.
-
 ---
 
-## Concept 1 — Singing while rock climbing  *(worked example)*
+## Concept 1 — Singing while rock climbing
 
 **Human-expert reference (composite of music-performance-in-an-unusual-venue Shorts).**
 Top performers in this lane treat the stunt as a *performance*, not a novelty: the unusual
@@ -49,39 +45,83 @@ concrete, on-pattern tactics (peak-syncing, three title frames).
 
 ---
 
-## Concept 2 — *(fill in: e.g. "60-second cold brew coffee tutorial")*
+## Concept 2 — "I Tried Waking Up at 5 AM for 30 Days"
 
-**Human-expert reference.** *(Describe what top how-to/recipe Shorts do: positioning as a
-fast, foolproof result; hook that shows the finished payoff in 0–3s then rewinds; titles using
-a number/“the only way” formula. Cite a real breakdown if available.)*
+**Human-expert reference (Ali Abdaal — productivity/education).**
+Ali Abdaal positions himself as a relatable expert who turns personal experiments into
+actionable lessons. Videos open with a question or a transformation promise and alternate
+between storytelling and practical advice at a conversational pace. Titles follow formulas like
+"I Tried X for 30 Days" or "What I Learned From…". Per Callum McDonnell's breakdown of Abdaal's
+content team, ideas are vetted on title/thumbnail strength and the clarity of the promised
+outcome before production. *Sources: Callum McDonnell, "Meet the YouTube Genius Behind Ali
+Abdaal" (2025); Angus Parker interview, "The Man Behind Ali Abdaal's £5 Million Business."*
 
-**ViralForge plan.** *(Run `python src/cli.py "<idea>"` and paste the positioning, hook, titles.)*
-
-| Axis | Match / divergence |
-|---|---|
-| **Positioning** | *(fill)* |
-| **Hook pacing** | *(fill)* |
-| **Title formula** | *(fill)* |
-
----
-
-## Concept 3 — *(fill in: e.g. "POV: my cat reacts to different sounds")*
-
-**Human-expert reference.** *(Describe top pet/POV Shorts moves: relatable-character positioning,
-immediate cute/funny payoff in the hook, POV/“nobody:” title formula.)*
-
-**ViralForge plan.** *(Run the CLI and paste output.)*
+**ViralForge plan (from `src/cli.py "I Tried Waking Up at 5 AM for 30 Days"`).**
+- *Positioning:* rejects the earnest self-improvement angle as "saturated and mocked," targeting
+  the ironic recreational-productivity viewer ("the person watching at 2 AM who will never do
+  this," 18–28) and reframing the "winning before everyone wakes up" feeling as half-absurd.
+- *Hook:* opens on the **Day-30 "after"** result, withholds the "was it worth it" answer, then
+  opens a second curiosity gap — "days 2–15 almost broke me… what nobody tells you about the middle."
+- *Titles:* [Challenge] "I Woke Up at 5AM for 30 Days, This is What Happened"; [Series] "Day 1 of
+  My 5AM Challenge"; [Emotional] "I Survived 30 Days at 5AM."
 
 | Axis | Match / divergence |
 |---|---|
-| **Positioning** | *(fill)* |
-| **Hook pacing** | *(fill)* |
-| **Title formula** | *(fill)* |
+| **Positioning** | **Divergence.** Abdaal frames it as a sincere personal experiment yielding a productivity lesson; ViralForge deliberately rejects that stance — its comment-grounded trend step found the earnest angle gets *mocked* ("treating peoples day to day realities like a MrBeast challenge"), so it pivots to an ironic, anti-aspirational positioning. Same topic, opposite stance. |
+| **Hook pacing** | **Partial match.** Both front-load a transformation promise, but Abdaal's is a conversational, question-led setup while ViralForge leads with a dramatic before/after payoff plus a withheld second gap — more spectacle than conversation. |
+| **Title formula** | **Strong match.** The lead title "I Woke Up at 5AM for 30 Days, This is What Happened" is exactly Abdaal's "I Tried X for N Days + outcome" formula. |
+
+**Verdict:** ViralForge reproduces Abdaal's signature title formula and front-loads transformation
+like he does, but its data-grounded positioning pulls it *off* his sincere stance toward irony —
+a divergence driven by what the real comments rewarded, not a failure to recognize the archetype.
 
 ---
 
-## Cross-concept summary  *(write after ≥3 concepts)*
+## Concept 3 — "Last Person to Stop Singing Wins $100"
 
-Summarize the pattern: on which axes does ViralForge reliably match expert moves, and where does
-it diverge? Tie back to the architecture — e.g. does the data-grounded trend_analyst step explain
-stronger title-formula matches than the single-prompt baseline produces for the same concepts?
+**Human-expert reference (MrBeast — entertainment/challenge).**
+MrBeast positions content around spectacle and stakes: state the premise immediately, no long
+intro, rapid pacing with constant escalation and mini-payoffs, and simple outcome-oriented
+titles like "Last To Leave ___ Wins $___." He has repeatedly stressed that titles, thumbnails,
+and the first few seconds are the levers behind retention and growth. *Sources: Think Media
+interview with MrBeast (2023); Jon Youshaei, "Why Every MrBeast Video Gets 200M Views."*
+
+**ViralForge plan (from `src/cli.py 'Last Person to Stop Singing Wins $100'`).**
+- *Positioning:* challenge-with-stakes framing, but leans into the **comedy/chaos of singing**
+  (cracking voices, forgotten lyrics) over pure endurance, and frames the $100 as *real and
+  attainable* for a 13–24 audience who picture themselves in it. Notably, it also flags from its
+  trend data that bigger dollar figures perform better and suggests bumping the prize.
+- *Hook:* the $100 is on screen in **0–3s before a note is sung**; "we've been going 45 minutes,
+  one person is about to lose it"; zoom on the weakest singer — "who breaks first? 👀".
+- *Titles:* [Challenge] "Last to Stop Singing Wins $100"; [Series] "Singing Challenge #1: Who
+  Quits First?"; [Emotional] "I Can't Stop Singing (Help Me)."
+
+| Axis | Match / divergence |
+|---|---|
+| **Positioning** | **Match, with a divergence on scale.** Both use challenge-with-stakes framing and lead with the prize; ViralForge diverges by reframing around comedy and *attainable* $100 stakes rather than MrBeast's massive-prize spectacle — though it explicitly notes the data favors bigger numbers, echoing MrBeast's own stakes logic. |
+| **Hook pacing** | **Strong match.** Premise + prize in the first seconds, escalation via a running 45-minute timer and checkpoints, payoff withheld to "who breaks first?" — textbook MrBeast retention structure. |
+| **Title formula** | **Strong match.** "Last to Stop Singing Wins $100" is exactly the "Last to ___ Wins $___" formula, and ViralForge surfaced the dollar-amount-magnitude pattern straight from the trend data. |
+
+**Verdict:** a strong reproduction of MrBeast's title formula and immediate-stakes pacing; the
+only divergence is framing the prize as attainable rather than spectacular — and even there
+ViralForge flagged the trade-off rather than missing it.
+
+---
+
+## Cross-concept summary
+
+Across all three concepts the pattern is consistent: **ViralForge reliably reproduces title
+formulas and hook-pacing structure, and diverges most on positioning.** The climbing example
+matched on all three axes; the Abdaal and MrBeast examples matched strongly on title formula and
+pacing but pulled away on positioning (toward irony for the 5 AM video, toward attainable stakes
+for the singing challenge).
+
+That divergence traces directly to the architecture. The data-grounded `trend_analyst` step reads
+real view counts and top comments *before* positioning is written, so when the audience signal
+contradicts the creator's signature stance — sincere productivity advice gets mocked in the 5 AM
+comments; vague-prize challenges underperform in the singing data — ViralForge follows the data
+rather than the archetype. The single-prompt baseline, with no live data, has nothing to pull it
+off the generic archetype. That is precisely the difference this quality comparison and the A/B
+table (`eval_results.md`) are meant to expose together: the Skills pipeline's extra cost (≈9 calls
+/ ≈20K tokens vs. the baseline's 1 call / ≈4K) buys positioning grounded in what the audience
+actually rewarded, even when that means diverging from a famous creator's playbook.

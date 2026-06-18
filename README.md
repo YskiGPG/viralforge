@@ -4,7 +4,7 @@ A conversational AI video-planning assistant for YouTube Shorts. Describe a vide
 in natural language (e.g. *"I want to film myself singing while rock climbing"*) and
 ViralForge produces a complete creative plan: core positioning, three title variants, a
 second-by-second 15-second hook structure, filming recommendations, and a distribution
-strategy — backed by real YouTube and Reddit data.
+strategy — backed by real YouTube video and comment data.
 
 Course project — Northeastern, Summer 2026. Team: Andrew Min, Shiqi Yang.
 
@@ -26,14 +26,14 @@ Orchestrator agent  ── decides which Skills + Tools to invoke
 Skills           Tools          Memory
 (how to do it)   (data access)  (convo state)
   │                │
-  ├ trend_analyst  ├ youtube_search_tool  (YouTube Data API v3)
-  ├ hook_writer    └ reddit_search_tool   (Reddit API / PRAW)
+  ├ trend_analyst  ├ youtube_search_tool    (YouTube Data API v3)
+  ├ hook_writer    └ youtube_comments_tool  (YouTube comment threads)
   ├ title_crafter
   └ platform_stylist
 ```
 
 - **Models:** Claude Haiku 4.5 (cheap/fast tasks), Claude Sonnet 4.6 (key reasoning)
-- **Data sources:** YouTube Data API v3 + Reddit API (both free tier)
+- **Data sources:** YouTube Data API v3 — video search + comments (free tier)
 - **Frontend:** Streamlit with streaming chat output
 
 ## Project layout
@@ -48,7 +48,7 @@ viralforge/
 ├── src/
 │   ├── tools/               # Data-access functions
 │   │   ├── youtube_search_tool.py
-│   │   └── reddit_search_tool.py
+│   │   └── youtube_comments_tool.py
 │   ├── orchestrator.py      # The main agent loop
 │   └── config.py            # Loads keys from .env
 ├── tests/                   # Minimal verification scripts for each API
@@ -80,7 +80,7 @@ cp .env.example .env
 # 5. Verify each API works
 python tests/check_anthropic.py
 python tests/check_youtube.py
-python tests/check_reddit.py
+python tests/check_youtube_comments.py
 ```
 
 ## Getting API keys
@@ -89,7 +89,6 @@ python tests/check_reddit.py
 |---|---|---|
 | Anthropic | https://console.anthropic.com → API Keys | $5 free credit |
 | YouTube Data API v3 | https://console.cloud.google.com → enable API → create API key | Free, no card needed |
-| Reddit | https://www.reddit.com/prefs/apps → create "script" app | Free |
 
 See `docs/` for the full project brief.
 

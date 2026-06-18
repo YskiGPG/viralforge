@@ -88,7 +88,7 @@ def main(argv):
         "",
         "- **Cost of the Skills architecture:** more calls and more tokens (each pipeline step is a "
         "separate call, and progressive disclosure re-sends a skill body as context when invoked).",
-        "- **What it buys:** real grounding data (YouTube/Reddit), step-specialized reasoning, and the "
+        "- **What it buys:** real grounding data (YouTube videos + comments), step-specialized reasoning, and the "
         "adaptive fast path for follow-ups (a single-skill follow-up is ~2 calls, not a full plan).",
         "- Pair this quantitative table with the qualitative quality comparison in `eval_quality.md` "
         "to judge whether the extra cost yields a better *plan*, which is the real claim under test.",

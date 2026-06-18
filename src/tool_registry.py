@@ -10,7 +10,7 @@ import json
 import logging
 from typing import Any
 
-from tools.reddit_search_tool import reddit_search
+from tools.youtube_comments_tool import youtube_comments
 from tools.youtube_search_tool import youtube_search
 
 log = logging.getLogger(__name__)
@@ -52,31 +52,27 @@ TOOL_DEFS: list[dict[str, Any]] = [
         },
     },
     {
-        "name": "reddit_search",
+        "name": "youtube_comments",
         "description": (
-            "Search Reddit discussions to learn what a real audience says about a topic — their "
-            "language, pain points and interests. Returns each post's title, score, comment count "
-            "and a snippet. Use to make a plan authentic to the audience."
+            "Fetch the top comments on a specific video (by video_id from a youtube_search result) "
+            "to learn what the real audience says about a topic — their language, reactions, pain "
+            "points and desires. Returns each comment's author, text and like count. Use after "
+            "youtube_search to make a plan authentic to the audience of comparable Shorts."
         ),
         "input_schema": {
             "type": "object",
             "properties": {
-                "query": {"type": "string", "description": "Search query."},
-                "subreddit": {
-                    "type": "string",
-                    "description": "Subreddit to search within, or 'all' (default).",
-                    "default": "all",
-                },
-                "limit": {"type": "integer", "description": "How many posts to return (default 10).", "default": 10},
+                "video_id": {"type": "string", "description": "The video_id from a youtube_search result."},
+                "limit": {"type": "integer", "description": "How many top comments to return (default 10).", "default": 10},
             },
-            "required": ["query"],
+            "required": ["video_id"],
         },
     },
 ]
 
 _DISPATCH = {
     "youtube_search": youtube_search,
-    "reddit_search": reddit_search,
+    "youtube_comments": youtube_comments,
 }
 
 

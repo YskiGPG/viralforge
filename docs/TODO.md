@@ -4,8 +4,10 @@ Task checklist for building ViralForge. Written to be actionable by Claude Code:
 each task states what to do, what "done" looks like, and what it depends on.
 
 **Architecture is fixed** (do not substitute): Anthropic Python SDK directly (no
-LangGraph/CrewAI/AutoGen), Skills + Tools pattern, YouTube Data API v3 + Reddit (PRAW),
-Streamlit frontend. Models: Claude Haiku 4.5 (cheap/fast), Claude Sonnet 4.6 (reasoning).
+LangGraph/CrewAI/AutoGen), Skills + Tools pattern, YouTube Data API v3 (video search +
+comments), Streamlit frontend. Models: Claude Haiku 4.5 (cheap/fast), Claude Sonnet 4.6
+(reasoning). *(Reddit/PRAW was dropped — Reddit now gates API access behind an approval
+process; YouTube comments replace it as the audience-signal source.)*
 
 **Settled project decisions** (do not revisit):
 - **Output language: English only.** All Skill instructions, generated plans, and demos are
@@ -22,17 +24,17 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 ## Phase 0 — Environment & credentials
 
 - [x] **0.1 Install dependencies.** `pip install -r requirements.txt` in a Python 3.11+ venv.
-  *Done when:* imports of `anthropic`, `googleapiclient`, `praw`, `streamlit`, `dotenv` all succeed.
-  *Status:* venv at `.venv/`, all 5 imports verified.
-- [~] **0.2 Provision API keys.** Anthropic (console.anthropic.com), YouTube Data API v3
-  (console.cloud.google.com → enable API → API key), Reddit (reddit.com/prefs/apps → "script" app).
-  *Status:* Anthropic + YouTube provided. **Reddit still TODO.**
+  *Done when:* imports of `anthropic`, `googleapiclient`, `streamlit`, `dotenv` all succeed.
+  *Status:* venv at `.venv/`, all imports verified.
+- [x] **0.2 Provision API keys.** Anthropic (console.anthropic.com) and YouTube Data API v3
+  (console.cloud.google.com → enable API → API key). *(No Reddit key — dropped, see header.)*
+  *Status:* Anthropic + YouTube provided. YouTube comments use the same key.
 - [x] **0.3 Fill `.env`.** `cp .env.example .env`, paste real keys.
   *Done when:* `python -c "import sys; sys.path.insert(0,'src'); import config"` runs with no error.
-- [~] **0.4 Verify each API.** Run `tests/check_anthropic.py`, `tests/check_youtube.py`,
-  `tests/check_reddit.py`.
+- [x] **0.4 Verify each API.** Run `tests/check_anthropic.py`, `tests/check_youtube.py`,
+  `tests/check_youtube_comments.py`.
   *Done when:* all three print their success line and real data.
-  *Status:* Anthropic ✅, YouTube ✅ verified live. Reddit pending creds (tool degrades to [] meanwhile).
+  *Status:* Anthropic ✅, YouTube search ✅, YouTube comments ✅.
   *Depends on:* 0.3.
 
 ---
@@ -51,12 +53,14 @@ leaking out), so Skills and the orchestrator stay decoupled from the API SDKs.
   *Done when:* `youtube_search("rock climbing singing", max_results=8)` returns 8 dicts with
   non-null integer `view_count`.
   *Depends on:* 0.4.
-- [~] **1.2 Implement `reddit_search_tool.reddit_search`.** *(code complete; needs live key to verify)*
-  Wrap PRAW read-only. Support searching a specific subreddit or `all`. Pull top/hot results.
-  *Returns:* `list[dict]` each with `title, score, num_comments, subreddit, url, selftext` (truncate selftext to ~500 chars).
-  *Done when:* `reddit_search("rock climbing", subreddit="climbing", limit=10)` returns 10 dicts with integer `score`.
+- [x] **1.2 Implement `youtube_comments_tool.youtube_comments`.** *(audience-signal source; replaces Reddit)*
+  Wrap YouTube Data API v3 `commentThreads().list()` (1 quota unit) for a given `video_id` from a
+  prior `youtube_search` result. Order by relevance; truncate each comment to ~500 chars.
+  *Returns:* `list[dict]` each with `author, text, like_count, video_id`.
+  *Done when:* `youtube_comments(<a real video_id>, limit=5)` returns dicts with integer `like_count`
+  (and degrades to `[]` when comments are disabled).
   *Depends on:* 0.4.
-- [x] **1.3 Add basic resilience to both tools.** *(VERIFIED: cache hit on repeat query; reddit 401 degraded to [])*
+- [x] **1.3 Add basic resilience to both tools.** *(VERIFIED: cache hit on repeat query; comments-disabled degraded to [])*
   return an empty list and log a warning rather than crashing the orchestrator. Add a simple
   in-memory cache (dict keyed by query) so repeated identical searches during one session
   don't burn quota.
@@ -77,7 +81,7 @@ So the `description` must be precise enough for routing, and the body must be
 self-contained (assume the model reads it cold).
 
 - [x] **2.1 Write `skills/trend_analyst/SKILL.md`.**
-  Input: a list of videos (from `youtube_search`) + optionally Reddit discussion. Output: a
+  Input: a list of videos (from `youtube_search`) + optionally top comments. Output: a
   structured summary of viral patterns — common title formulas, hook archetypes, what
   separates high-view from low-view videos. Specify the exact output structure in the SKILL.md.
   *Done when:* fed a real `youtube_search` result, the skill produces a structured pattern summary (test via a standalone script before wiring into the orchestrator).
@@ -103,7 +107,7 @@ self-contained (assume the model reads it cold).
 Build in `src/orchestrator.py`. This is the Anthropic SDK message loop. **Build the simple
 linear version first** (one concept → full pipeline → plan), then add routing in Phase 4.
 
-- [x] **3.1 Define tool schemas for the SDK.** Express `youtube_search` and `reddit_search`
+- [x] **3.1 Define tool schemas for the SDK.** Express `youtube_search` and `youtube_comments`
   as Anthropic tool-use definitions (name, description, JSON input schema). Wire the message
   loop so when Claude requests a tool, the orchestrator runs the real Python function and
   feeds the result back.
@@ -116,7 +120,7 @@ linear version first** (one concept → full pipeline → plan), then add routin
   *Done when:* a debug log shows only names+descriptions resident initially, and a full body loaded only when that skill is invoked.
   *Depends on:* Phase 2.
 - [x] **3.3 Wire the full linear pipeline.** For a complex request, run the sequence:
-  youtube_search + reddit_search → trend_analyst → (hook_writer, title_crafter) →
+  youtube_search + youtube_comments → trend_analyst → (hook_writer, title_crafter) →
   platform_stylist → assemble final plan. Use Sonnet 4.6 for reasoning-heavy steps, Haiku 4.5
   for light ones.
   *Done when:* `orchestrator.run("I want to film myself singing while rock climbing")` returns a complete plan (positioning, 3 titles, 15s hook, filming tips, distribution).
